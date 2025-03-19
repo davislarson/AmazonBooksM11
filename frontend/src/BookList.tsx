@@ -23,6 +23,7 @@ export default function BookList() {
       <div className="container mt-5 mb-5 text-center w-50">
         <h1>Book List</h1>
 
+        {/* This sets up the ability to order ascending or descending */}
         <label>Order By:</label>
         <select
           value={orderBy}
@@ -35,9 +36,9 @@ export default function BookList() {
         </select>
         <br />
         <br />
-
+        {/* All of the books will be mapped over here */}
         {books.map((book) => (
-          <div className="card" key={book.bookID}>
+          <div className="card" key={book.bookID} style={{ backgroundColor: '#f8f9fa' }}>
             <h3 className="card-title text-center mt-3">{book.title}</h3>
             <div className="card-body text-center">
               <table className="table table-bordered">
@@ -76,6 +77,7 @@ export default function BookList() {
           </div>
         ))}
       </div>
+      {/* This is the pagination section */}
       <div>
         <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
           Previous
