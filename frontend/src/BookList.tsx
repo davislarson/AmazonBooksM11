@@ -24,7 +24,7 @@ export default function BookList() {
         <h1>Book List</h1>
 
         {/* This sets up the ability to order ascending or descending */}
-        <label>Order By:</label>
+        <label>Order by title:</label>
         <select
           value={orderBy}
           onChange={(e) => {
