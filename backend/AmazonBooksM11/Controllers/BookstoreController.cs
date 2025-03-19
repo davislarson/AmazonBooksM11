@@ -16,7 +16,7 @@ public class BookstoreController : ControllerBase
     public IActionResult GetBooks(int page = 1, int pageSize = 5, string orderBy = "Asc")
     {
         IQueryable<Book> query = _bookstoreContext.Books;
-        
+        // Order the query based on if they sent in ascending or descending
         query = orderBy.Equals("Desc", StringComparison.OrdinalIgnoreCase)
             ? query.OrderByDescending(b => b.Title)
             : query.OrderBy(b => b.Title);
