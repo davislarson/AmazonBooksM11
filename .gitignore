@@ -1,0 +1,78 @@
+# Global Ignore
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ==============================
+# Frontend (React)
+# ==============================
+**/node_modules/
+**/.npm/
+**/.yarn/
+
+# Build output
+**/build/
+**/dist/
+
+# Environment variables
+**/.env*
+
+# ==============================
+# Backend (.NET)
+# ==============================
+**/bin/
+**/obj/
+
+# NuGet packages
+**/packages/
+**/.nuget/
+
+# User-specific Visual Studio files
+**/.vs/
+**/*.suo
+**/*.user
+**/*.ide
+**/*.sln.docstates
+**/*.csproj.user
+
+# Rider / JetBrains settings
+**/.idea/
+**/.idea_modules/
+**/workspace.xml
+**/*.iml
+
+# Environment variables
+**/.env*
+**/appsettings*.json
+
+# SQLite & Local Databases (Optional)
+**/*.db
+**/*.db-journal
+**/migrations/
+**/*.mdf
+**/*.ldf
+
+# ==============================
+# IDE-Specific (VS, Rider, VS Code)
+# ==============================
+.vscode/
+.vs/
+.idea/
+*.iml
+*.suo
+*.user
+*.userosscache
+
+# ==============================
+# Docker (Optional)
+# ==============================
+docker-compose.override.yml
+docker-compose.override.yaml
+.env.docker
+
+# ==============================
+# OS-Specific (Mac & Windows)
+# ==============================
+.DS_Store
+Thumbs.db
