@@ -12,6 +12,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
+  // This handles if you add the same book twice by updating both the quantity and cost
   const addToCart = (book: CartItem) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.bookID === book.bookID);
@@ -24,6 +25,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  // This will remove from the cart one at a time and update the cost correctly
   const removeFromCart = (bookID: number, quantityToRemove: number) => {
     setCart((prevCart) =>
       prevCart.flatMap((item) => {
