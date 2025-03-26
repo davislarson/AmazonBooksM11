@@ -44,7 +44,6 @@ yarn-error.log*
 
 # Environment variables
 **/.env*
-**/appsettings*.json
 
 # SQLite & Local Databases (Optional)
 **/*.db
