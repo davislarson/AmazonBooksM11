@@ -10,7 +10,7 @@ export default function GenreFilter(props: {
   useEffect(() => {
     const fetchGenres = async () => {
       try {
-        const response = await fetch('https://localhost:5000/Bookstore/GetGenres');
+        const response = await fetch('https://bookstore-davis-backend.azurewebsites.net/Bookstore/GetGenres');
         const data = await response.json();
         setGenres(data);
       } catch (e) {
