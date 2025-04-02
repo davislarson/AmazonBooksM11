@@ -23,6 +23,7 @@ yarn-error.log*
 # ==============================
 **/bin/
 **/obj/
+publish/
 
 # NuGet packages
 **/packages/

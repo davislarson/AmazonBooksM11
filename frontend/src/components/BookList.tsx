@@ -3,27 +3,43 @@ import { Book } from '../types/Book';
 import { useNavigate } from 'react-router-dom';
 import { CartItem } from '../types/CartItem';
 import { useCart } from '../context/CartContext';
+import { fetchBooks } from '../api/BooksAPI';
+import Pagination from './Pagination';
 
 export default function BookList(props: { selectedGenres: string[]; orderBy: string }) {
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      const genreParams = props.selectedGenres.map((g) => `genres=${encodeURIComponent(g)}`).join('&');
-      const response = await fetch(
-        `https://localhost:5000/Bookstore/GetBooks?page=${page}&pageSize=${pageSize}&orderBy=${props.orderBy}${genreParams.length ? `&${genreParams}` : ''}`
-      );
-      const data = await response.json();
-      setBooks(data.books);
-      setTotalPages(Math.ceil(data.totalNumberOfBooks / pageSize));
-    };
-    fetchBooks();
+    const loadBooks = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchBooks(page, pageSize, props.selectedGenres, props.orderBy);
+        setBooks(data.books); // Assuming the API returns an array of books
+        setTotalPages(Math.ceil(data.totalNumberOfBooks / pageSize)); // Calculate total pages based on the total number of books
+      } catch (e) {
+        setError((e as Error).message); // Handle the error
+      } finally {
+        setLoading(false); // Set loading to false after the API call
+      }
+    }
+    loadBooks();
   }, [page, pageSize, props.orderBy, props.selectedGenres]);
+
+
+  if (loading) {
+    return <p>Loading books...</p>;
+  }
+  if (error) {
+    // Display error message if there was an error fetching the books
+    return <p className="text-red-500">Error: {error}</p>;
+  }
 
   const handleAddToCart = async (book: Book) => {
     const cartItem: CartItem = {
@@ -82,40 +98,16 @@ export default function BookList(props: { selectedGenres: string[]; orderBy: str
           </div>
         ))}
         {/* This is the pagination section */}
-        <div className="text-center mt-4">
-          <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} disabled={page === 1}>
-            Previous
-          </button>
-
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => setPage(index + 1)}
-              className={page === index + 1 ? 'active' : ''}
-              disabled={page === index + 1}
-            >
-              {index + 1}
-            </button>
-          ))}
-
-          <button onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))} disabled={page === totalPages}>
-            Next
-          </button>
-          <br />
-          <br />
-          <label>Results Per Page:</label>
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value));
-              setPage(1); // Reset to first page on page size change
-            }}
-          >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-          </select>
-        </div>
+        <Pagination 
+          currentPage={page}
+          totalPages={totalPages}
+          pageSize={pageSize}
+          onPageChange={setPage}
+          onPageSizeChange={(newSize) => {
+            setPageSize(newSize);
+            setPage(1); // Reset to first page on page size change
+          }}
+          />
       </div>
     </>
   );
